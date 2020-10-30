@@ -12,16 +12,16 @@
     >
 
       <template #footer>
-        <van-button icon="minus" color="#7232dd" plain size="mini"/>
+        <van-button icon="minus" color="#7232dd" plain size="mini" @click="minusBtn(item)" :disabled="item.quantity==1?true:false"/>
         <span class="number"> {{item.quantity}}</span>
-        <van-button icon="plus" color="#7232dd" size="mini" plain/>
+        <van-button icon="plus" color="#7232dd" size="mini" plain @click="plusBtn(item)"/>
       </template>
     </van-card>
   </div>
 </template>
 
 <script>
-import { loadCarts } from "../services/carts";
+import { loadCarts,addToCart } from "../services/carts";
 export default {
   name: "Cart",
   data() {
@@ -33,7 +33,18 @@ export default {
   async created() {
     const res = await loadCarts();
     this.cartsList = res;
-    console.log(this.cartsList);
+    // console.log(this.cartsList);
+  },
+  methods: {
+    async minusBtn(item){
+      item.quantity -= 1
+      await addToCart(item._id,-1)
+      
+    },
+    async plusBtn(item){
+      item.quantity += 1
+      await addToCart(item._id,1)
+    }
   },
 };
 </script>

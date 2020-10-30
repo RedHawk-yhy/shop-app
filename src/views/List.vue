@@ -17,7 +17,6 @@
         :title="item.name"
         :thumb="item.coverImg | dalImg"
         :thumb-link="'/#/detail?id=' + item._id"
-        @click="jumpBtn(item._id)"
       >
         <template #tags>
           <van-tag plain type="danger">标签</van-tag>
@@ -35,6 +34,7 @@
 
 <script>
 // import axios from "axios";
+import { mapActions } from "vuex";
 import { loadProducts } from "../services/products";
 import { addToCart } from "../services/carts";
 export default {
@@ -52,6 +52,7 @@ export default {
     this.loadData();
   },
   methods: {
+    ...mapActions('cart',['loadCartsFromServer']),
     async loadData() {
       this.loading = true;
       const result = await loadProducts({ page: this.page });
@@ -65,6 +66,7 @@ export default {
     async buyHandle(item) {
       const res = await addToCart(item._id, 1);
       console.log(res);
+      this.loadCartsFromServer()
     },
     onLoad() {
       if (this.page > this.pages) {
@@ -73,9 +75,9 @@ export default {
         this.loadData();
       }
     },
-    jumpBtn(v) {
+    /*     jumpBtn(v) {
       window.location.href = "/#/detail?id=" + v;
-    },
+    }, */
   },
 };
 </script>

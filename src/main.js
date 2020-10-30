@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import store from './store'
 import App from './App.vue'
 import router from './router'
 import {serverUrl} from './utils/tools'
@@ -21,5 +22,6 @@ Vue.filter("dalImg",(str)=>{
 })
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
